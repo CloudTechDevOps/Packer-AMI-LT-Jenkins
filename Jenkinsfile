@@ -46,21 +46,21 @@ pipeline {
             }
         }
 
-        stage('Update Launch Template') {
-            steps {
-            script {
-              sh """
+       stage('Update Launch Template') {
+    steps {
+        script {
+            sh """
                 aws ec2 create-launch-template-version \\
-                  --launch-template-id ${LAUNCH_TEMPLATE_ID} \\
-                  --version-description "Updated with AMI ${NEW_AMI_ID}" \\
+                  --launch-template-id ${env.LAUNCH_TEMPLATE_ID} \\
+                  --version-description "Updated with AMI ${env.NEW_AMI_ID}" \\
                   --source-version 1 \\
-                  --launch-template-data '{"ImageId":"${NEW_AMI_ID}"}' \\
-                  --region ${AWS_REGION}
-              """
-            }
-          }
+                  --launch-template-data '{\"ImageId\":\"${env.NEW_AMI_ID}\"}' \\
+                  --region ${env.AWS_REGION}
+            """
         }
-    
+    }
+}
+
         stage('Start ASG Instance Refresh') {
           steps {
             script {
